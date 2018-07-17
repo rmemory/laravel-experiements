@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
+import Loading from './Loading.jsx';
+
 class App extends Component {
 	state = {
 		users: [],
@@ -19,18 +21,21 @@ class App extends Component {
 	}
 
 	render() {
-		return (<div>
-			{!this.state.loading ? 
-				this.state.users.map((user) => {
-					return (
+		return (
+			<div>
+				{!this.state.loading ?
+					this.state.users.map(user => (
 						<Fragment>
-							<h3>{user.name.first}</h3>
-							<p>{user.email}</p>
-							<hr/>
+							<h3>
+								{user.name.first}
+							</h3>
+							<p>
+								{user.email}
+							</p>
+							<hr />
 						</Fragment>
-					)
-				}
-				): 'Loading'}
+					),
+					) : <Loading message="users" />}
 			</div>);
 	}
 }
