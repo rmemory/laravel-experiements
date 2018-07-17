@@ -1,12 +1,10 @@
+/* eslint-disable implicit-arrow-linebreak */
+
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './components/App.jsx';
-import './index.css';
-
-// The non-hot-loader way
-// ReactDOM.render(<App />, document.getElementById('app'));
 
 // The hot loader way
 const render = Component =>
@@ -22,4 +20,3 @@ render(App);
 if (module.hot) {
 	module.hot.accept('./components/App.jsx', () => render(App));
 }
-

@@ -1,29 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './app.css';
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 
-const welcome = 'Welcome to React';
+class App extends Component {
+	state = {
+		users: [],
+		loading: true,
+	}
 
-const App = () => (
-	<div className="App">
-		<header className="App-header">
-			<img src={logo} className="App-logo" alt="logo" />
-			<Welcome />
-		</header>
-		<p className="App-intro">
-			{'To get started, edit'}
-			<code>
-				{'src/components/App.jsx'}
-			</code>
-			{'and save to reload.'}
-		</p>
-	</div>
-);
+	componentWillMount() {
+		this.state.loading = true;
+		this.getUsers();
+		this.state.loading = false;
+	}
 
-const Welcome = () => (
-	<h1 className="App-title">
-		{welcome}
-	</h1>
-);
+	getUsers() {
+		axios('https://api.randomuser.me/?nat=US&results=5')
+			.then(response => this.setState({ users: response.data.results }));
+	}
+
+	render() {
+		return (<div>
+			{!this.state.loading ? 
+				this.state.users.map((user) => {
+					return (
+						<Fragment>
+							<h3>{user.name.first}</h3>
+							<p>{user.email}</p>
+							<hr/>
+						</Fragment>
+					)
+				}
+				): 'Loading'}
+			</div>);
+	}
+}
 
 export default App;
