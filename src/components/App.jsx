@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 import Loading from './Loading.jsx';
@@ -15,27 +15,36 @@ class App extends Component {
 		this.state.loading = false;
 	}
 
-	getUsers() {
+	getUsers = () => {
 		axios('https://api.randomuser.me/?nat=US&results=5')
-			.then(response => this.setState({ users: response.data.results }));
+			.then(response => this.setState({ users: [...this.state.users, ...response.data.results] }));
+	}
+
+	handleSubmit = (event) => {
+		event.preventDefault();
+		this.getUsers();
 	}
 
 	render() {
+		const { loading, users} = this.state;
 		return (
 			<div>
-				{!this.state.loading ?
-					this.state.users.map(user => (
-						<Fragment>
-							<h3>
+				{!loading ?
+					users.map(user => (
+						<div key={user.id.value}>
+							<h3 style={{ color: 'red' }}>
 								{user.name.first}
 							</h3>
 							<p>
 								{user.email}
 							</p>
 							<hr />
-						</Fragment>
+						</div>
 					),
 					) : <Loading message="users" />}
+				<form onSubmit={this.handleSubmit}>
+					<input type="submit" value="load users" />
+				</form>
 			</div>);
 	}
 }
